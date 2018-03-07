@@ -28,24 +28,27 @@ $(document).on('click', '.searchBTN', function () {
       method: 'GET'
     })
     .done(function (resp) {
-      // console.log(resp)
+      console.log(resp)
       for (var i = 0; i < resp.data.length; i++) {
+        var rating = resp.data[i].rating
+        console.log(rating)
+        var p = $('<p>').text('rating: '+ rating)
         var gif = ('<img class="gif" src="' + resp.data[i].images.fixed_height_still.url +
           '" data-still="' + resp.data[i].images.fixed_height_still.url +
           '" data-animate="' + resp.data[i].images.fixed_height.url + '" data-state="still"</img>')
-        $('#gifArea').append(gif)
-
+          
+        $('#gifArea').append(p,gif)
       }
+      $('.gif').on('click', function () {
+        var state = $(this).attr('data-state')
+        console.log(state)
+        if (state === "still") {
+          $(this).attr("src", $(this).attr("data-animate"));
+          $(this).attr("data-state", "animate");
+        } else {
+          $(this).attr("src", $(this).attr("data-still"));
+          $(this).attr("data-state", "still");
+        }
+      })
     })
-})
-$('.gif').on('click', function () {
-  var state = $(this).attr('data-state')
-  console.log(state)
-  if (state === "still") {
-    $(this).attr("src", $(this).attr("data-animate"));
-    $(this).attr("data-state", "animate");
-  } else {
-    $(this).attr("src", $(this).attr("data-still"));
-    $(this).attr("data-state", "still");
-  }
 })
